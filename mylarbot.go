@@ -39,9 +39,9 @@ const helpText string = `USAGE:
 
 SUBCOMMANDS:
 
-	help				Print this page
+	help	Print this page
 	info TITLE	Query info on a specific title
-	books				Get this week's releases`
+	books	START_DATE END_DATE (in datetime format) Get a week's releases`
 const booksHelp string = "Ask for 'books' and I'll tell you what issues hit shelves this week."
 const infoHelp string = "Ask for 'info' on a specific title and I'll tell everthing I know about it."
 
@@ -116,19 +116,3 @@ func getHelp(sym string) string {
 	}
  	return fmt.Sprintf("%s", defaultReply)
 }
-// // Query the details of a specific series
-// func querySeries(sym string) string {
-// 	query := fmt.Sprintf("http://comicvine.gamespot.com/api/volume/4050-"+"%v"+"/?api_key="+
-// 		vineApi+"&format=json"+"&field_list=name,start_year,publisher,image,count_of_issues,id", sym)
-//
-//   if seriesId == nil || seriesId == ""
-// }
-//
-//    if seriesid_s is None or seriesid_s == "":
-//        Errorf("bad parameters")
-//    return __get_dom( query.format(sstr(seriesid_s) ) )
-//  }
-//
-//  if s := strings.Repeat("x", b.N); str != s {
-//          b.Errorf("unexpected result; got=%s, want=%s", str, s)
-//      }

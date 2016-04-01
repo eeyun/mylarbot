@@ -92,8 +92,6 @@ func getInfo(title string) string {
 //      }
 
 
-
-
 // Get the relevant issues via Comic Vine.
 // func getIssues(sym string) string {
 // 	sym = strings.ToUpper(sym)
@@ -111,3 +109,20 @@ func getInfo(title string) string {
 // 	}
 // 	return fmt.Sprintf("unknown response format (symbol was \"%s\")", sym)
 // }
+
+// // Query the details of a specific series
+// func querySeries(sym string) string {
+// 	query := fmt.Sprintf("http://comicvine.gamespot.com/api/volume/4050-"+"%v"+"/?api_key="+
+// 		vineApi+"&format=json"+"&field_list=name,start_year,publisher,image,count_of_issues,id", sym)
+//
+//   if seriesId == nil || seriesId == ""
+// }
+//
+//    if seriesid_s is None or seriesid_s == "":
+//        Errorf("bad parameters")
+//    return __get_dom( query.format(sstr(seriesid_s) ) )
+//  }
+//
+//  if s := strings.Repeat("x", b.N); str != s {
+//          b.Errorf("unexpected result; got=%s, want=%s", str, s)
+//      }
