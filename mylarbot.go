@@ -33,7 +33,6 @@ import (
 	"strings"
 )
 
-//const vineApi string = "d6a994961f53528ffe83d9e92d50b6659dc4ceb0"
 const defaultReply string = "I'm sorry, I don't understand, try asking for help: `@mylar help`"
 const helpText string = `USAGE:
 @mylar [SUBCOMMAND]
