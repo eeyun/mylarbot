@@ -81,13 +81,13 @@ func getBooks(startDate, endDate string) string {
 	for i := range result.Results {
 		// Iterate over objects in the returned JSON and select useful details
 		// add them to the "message" array.
-	 	messages += fmt.Sprintf("%s\n%s\nIssue #%s\n%s\n\n\n",
+	 	messages += fmt.Sprintf("*%s*\n%s\n_Issue #%s_\n`%s`\n\n\n",
 		result.Results[i].Volume.IssueName,
 		result.Results[i].Name,
 		result.Results[i].IssueNumber,
 		result.Results[i].Volume.Siteurl)
 	}
-	return fmt.Sprintf("%v", messages)
+	return fmt.Sprintf(">>>%v", messages)
 }
 
 
