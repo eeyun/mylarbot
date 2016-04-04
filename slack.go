@@ -1,8 +1,8 @@
 /*
 
-mybot - Illustrative Slack bot in Go
+mylarbot - ComicVine API interface Slack bot in Go
 
-Copyright (c) 2015 RapidLoop
+Copyright (c) 2016 Ian Henry
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+
+// Slack integration and messaging functions
 
 package main
 

@@ -1,0 +1,76 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	//	"log"
+	//	"net/http"
+	"strings"
+)
+
+type Message struct {
+	Id      string `json:"id"`
+	Type    string `json:"type"`
+	Channel string `json:"channel"`
+	Text    string `json:"text"`
+}
+
+const vineApi string = "d6a994961f53528ffe83d9e92d50b6659dc4ceb0"
+
+const helpText string = `USAGE:
+	@mylar [SUBCOMMAND]
+
+SUBCOMMANDS:
+
+	help		Print this page
+	info		Query info on a specific title
+	books		Get this week's releases`
+
+const defaultReply string = "I'm sorry, I don't understand, try asking for help: `@mylar help`"
+
+func main() {
+
+	// First line of bullshit
+	b := []byte(`{"Id":"mylar","Type":"message","Channel":"test","Text":"<@id> help"}`)
+
+	var m Message
+
+	err := json.Unmarshal(b, &m)
+	//last line of bullshit ^
+	if err != nil {
+		fmt.Println("fucked")
+	}
+
+	if m.Type == "message" && strings.HasPrefix(m.Text, "<@id>") {
+		parts := strings.Fields(m.Text)
+		if len(parts) >= 1 {
+			switch {
+			case parts[1] == "help":
+				go func(m Message) {
+					m.Text = getHelp(parts[2])
+				}(m)
+			case parts[1] == "info":
+				fmt.Println("do the info thing")
+			case parts[1] == "books":
+				fmt.Println("do the books thing")
+			default:
+				fmt.Println(defaultReply)
+			}
+		} else {
+			fmt.Println(defaultReply)
+		}
+	}
+}
+
+func getHelp(sym string) string {
+	sym = strings.ToUpper(sym)
+	if sym == "INFO" {
+	case "BOOKS" :
+		return fmt.Sprintf("%v", helpText)
+	case "0" :
+		return fmt.Sprintf("%v", sym)
+	case "INFO" :
+		return fmt.Sprintf("help for info")
+	}
+ 	return fmt.Sprintf("Kill em all")
+}

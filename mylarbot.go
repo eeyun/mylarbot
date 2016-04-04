@@ -1,8 +1,8 @@
 /*
 
-mylarbot - ComicVine Slack bot in Go
+mylarbot - ComicVine API interface Slack bot in Go
 
-Copyright (c) 2015 RapidLoop
+Copyright (c) 2016 Ian Henry
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,6 @@ package main
 import (
 	"fmt"
 	"log"
-//"net/http"
 	"os"
 	"strings"
 )
