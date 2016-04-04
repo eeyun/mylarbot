@@ -28,7 +28,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
-//	"time"
+	"time"
 	"fmt"
   "github.com/bitly/go-simplejson"
   "io/ioutil"
@@ -39,31 +39,29 @@ const vineApi string = ""
 
 type Booklist struct {
 	Error        string `json:"error"`
-  Limit        int    `json:"limit"`
+	Limit        int    `json:"limit"`
 	Offset	     int 	  `json:"offset"`
 	PageResults  int    `json:"number_of_page_results"`
 	TotalResults int    `json:"number_of_total_results"`
 	StatusCode   int    `json:"status_code"`
 	Results     				[]struct {
 	  IssueNumber string   `json:"issue_number"`
-    Name        string   `json:"name"`
-    Volume               struct {
-		 	Apiurl		string   `json:"api_detail_url"`
-		 	Id        int      `json:"id"`
-		 	IssueName      string   `json:"name"`
-		 	Siteurl   string   `json:"site_detail_url"`
+		Name        string   `json:"name"`
+		Volume               struct {
+			Apiurl		string   `json:"api_detail_url"`
+			Id        int      `json:"id"`
+			IssueName string   `json:"name"`
+			Siteurl   string   `json:"site_detail_url"`
 		}
   }
 }
 
-func getBooks(startDate, endDate string) string {
+func getBooks(dummy string) string {
 	// TODO allow users to specify dates, make default
 	// behavior to show for current day
-	// func getBooks() string {
-	// sym = strings.ToUpper(sym)
-	// current_time := time.Now().Local()
-	// current_date := current_time.Format("2000-01-01")
-	url := fmt.Sprintf("http://comicvine.gamespot.com/api/issues/?api_key=%s&format=json&filter=store_date:%s|%s&field_list=volume,issue_number,name&sort=name:desc", vineApi, startDate, endDate)
+	currentTime := time.Now().Local()
+	currentDate := currentTime.Format("2006-01-02")
+	url := fmt.Sprintf("http://comicvine.gamespot.com/api/issues/?api_key=%s&format=json&filter=store_date:%s|%s&field_list=volume,issue_number,name&sort=name:desc", vineApi, currentDate, currentDate)
 	resp, err := http.Get(url)
 	if err != nil {
 		return fmt.Sprintf("error: %v", err)

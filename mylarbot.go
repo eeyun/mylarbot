@@ -26,92 +26,88 @@ THE SOFTWARE.
 package main
 
 import (
-	"fmt"
+//	"fmt"
 	"log"
-	"os"
-	"strings"
+//	"os"
+//	"strings"
+	"github.com/james-bowman/slack"
+	"github.com/james-bowman/talbot/brain"
 )
 
-const defaultReply string = "I'm sorry, I don't understand, try asking for help: `@mylar help`"
-const helpText string = `USAGE:
-@mylar [SUBCOMMAND]
-
-SUBCOMMANDS:
-
-	help	Print this page
-	info TITLE	Query info on a specific title
-	books	START_DATE END_DATE (in datetime format) Get a week's releases`
-const booksHelp string = "Ask for 'books' and I'll tell you what issues hit shelves this week."
-const infoHelp string = "Ask for 'info' on a specific title and I'll tell everthing I know about it."
-
 func main() {
-	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "usage: mybot slack-bot-token\n")
-		os.Exit(1)
+	slackToken := getToken()
+	conn, err := slack.Connect(slackToken)
+	if err != nil {
+		log.Fatal(err)
 	}
-
-	// start a websocket-based Real Time API session
-	ws, id := slackConnect(os.Args[1])
-	fmt.Println("mybot ready, ^C exits")
-
-	for {
-		// read each incoming message
-		m, err := getMessage(ws)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		// see if we're mentioned
-		if m.Type == "message" && strings.HasPrefix(m.Text, "<@"+id+">") {
-			// if so try to parse if
-			parts := strings.Fields(m.Text)
-			if len(parts) >= 3 || parts[1] == "help" {
-				switch parts[1]{
-				case "help":
-					// Get help on the specified subcommand
-					if len(parts) >= 3 {
-						go func(m Message) {
-							m.Text = getHelp(parts[2])
-							postMessage(ws, m)
-						}(m)
-					} else {
-						go func(m Message) {
-							m.Text = getHelp(parts[1])
-							postMessage(ws, m)
-						}(m)
-					}
-				case "books":
-					// rad, let's find out what books release this week
-					go func(m Message) {
-						m.Text = getBooks(parts[2], parts[3])
-						postMessage(ws, m)
-					}(m)
-				case "info":
-					// looks good, search the book title and return its info
-					go func(m Message) {
-						m.Text = getInfo(parts[2])
-						postMessage(ws, m)
-					}(m)
-				}
-				// NOTE: the Message object is copied, this is intentional
-			} else {
-				// huh?
-				m.Text = fmt.Sprintf("%v\n", defaultReply)
-				postMessage(ws, m)
-			}
-		}
-	}
+	slack.EventProcessor(conn, brain.OnAskedMessage, brain.OnHeardMessage)
+	// if len(os.Args) != 2 {
+	// 	fmt.Fprintf(os.Stderr, "usage: mybot slack-bot-token\n")
+	// 	os.Exit(1)
+	// }
+	//
+	// // start a websocket-based Real Time API session
+	// ws, id := slackConnect(os.Args[1])
+	// fmt.Println("mybot ready, ^C exits")
+	//
+	// for {
+	// 	// read each incoming message
+	// 	m, err := getMessage(ws)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// 	fmt.Println(m)
+	// 	// see if we're mentioned
+	// 	if m.Type == "message" && strings.HasPrefix(m.Text, "<@"+id+">") {
+	// 		// if so try to parse if
+	// 		parts := strings.Fields(m.Text)
+	// 		if len(parts) >= 1 || parts[1] == "help" {
+	// 			switch parts[1]{
+	// 			case "help":
+	// 				// Get help on the specified subcommand
+	// 				if len(parts) >= 3 {
+	// 					go func(m Message) {
+	// 						m.Text = getHelp(parts[2])
+	// 						postMessage(ws, m)
+	// 					}(m)
+	// 				} else {
+	// 					go func(m Message) {
+	// 						m.Text = getHelp(parts[1])
+	// 						postMessage(ws, m)
+	// 					}(m)
+	// 				}
+	// 			case "books":
+	// 				// rad, let's find out what books release this week
+	// 				go func(m Message) {
+	// 					m.Text = getBooks(parts[2], parts[3])
+	// 					postMessage(ws, m)
+	// 				}(m)
+	// 			case "info":
+	// 				// looks good, search the book title and return its info
+	// 				go func(m Message) {
+	// 					m.Text = getInfo(parts[2])
+	// 					postMessage(ws, m)
+	// 				}(m)
+	// 			}
+	// 			// NOTE: the Message object is copied, this is intentional
+	// 		} else {
+	// 			// huh?
+	// 			m.Text = fmt.Sprintf("%v\n", defaultReply)
+	// 			postMessage(ws, m)
+	// 		}
+	// 	}
+	// }
 }
 
-func getHelp(sym string) string {
-	sym = strings.ToUpper(sym)
-	switch sym{
-	case "books":
-		return fmt.Sprintf("%s", booksHelp)
-	case "HELP" :
-		return fmt.Sprintf("%s", helpText)
-	case "INFO" :
-		return fmt.Sprintf("%s ", infoHelp)
-	}
- 	return fmt.Sprintf("%s", defaultReply)
-}
+// func getHelp(sym string) string {
+// 	sym = strings.ToUpper(sym)
+// 	switch sym{
+// 	case "books":
+// 		return fmt.Sprintf("%s", booksHelp)
+// 	case "HELP" :
+// 		return fmt.Sprintf("%s", helpText)
+// 	case "INFO" :
+// 		return fmt.Sprintf("%s ", infoHelp)
+// 	}
+//  	return fmt.Sprintf("%s", defaultReply)
+// }
